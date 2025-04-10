@@ -7,6 +7,7 @@ using namespace cv;
 using namespace dnn;
 using namespace std;
 
+// Defining Classes names
 const vector<string> classNames = {
     "background", "aeroplane", "bicycle", "bird", "boat",
     "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
@@ -14,7 +15,7 @@ const vector<string> classNames = {
     "sheep", "sofa", "train", "tvmonitor"
 };
 
-// only track these classes
+// Only track these classes
 const vector<string> classesToTrack = { "person", "car" };
 
 // Redetection every n frames
@@ -23,20 +24,24 @@ const int REDETECTION_INTERVAL = 30;
 vector<Ptr<Tracker>> trackers;
 vector<Rect> boxes;
 
+// helper function for checking if a perticular calss has to be tracked
 bool shouldTrackClass(const string& className) {
     return find(classesToTrack.begin(), classesToTrack.end(), className) != classesToTrack.end();
 }
 
 int main() {
+    // Loading Models
     Net net = readNetFromCaffe("MobileNetSSD_deploy.prototxt", "MobileNetSSD_deploy.caffemodel");
 
+
+    // Capturing the frames through OpenCV
     VideoCapture cap("cars.mp4");
     if (!cap.isOpened()) {
         cerr << "Error opening video\n";
         return -1;
     }
 
-    // Prepare video writer
+    // Saving the video
     int frame_width = static_cast<int>(cap.get(CAP_PROP_FRAME_WIDTH));
     int frame_height = static_cast<int>(cap.get(CAP_PROP_FRAME_HEIGHT));
     VideoWriter writer("output1.avi", VideoWriter::fourcc('M', 'J', 'P', 'G'), 30, Size(frame_width, frame_height));
@@ -44,11 +49,12 @@ int main() {
     Mat frame;
     int frameCount = 0;
 
+    // main loop
     while (cap.read(frame)) {
         frameCount++;
 
         if (frameCount % REDETECTION_INTERVAL == 1 || trackers.empty()) {
-            // Re-detection
+            // Re-detection 
             trackers.clear();
             boxes.clear();
 
@@ -60,6 +66,8 @@ int main() {
 
             for (int i = 0; i < detectionMat.rows; i++) {
                 float confidence = detectionMat.at<float>(i, 2);
+
+                // Parsing the detected frames
                 if (confidence > confidenceThreshold) {
                     int classId = static_cast<int>(detectionMat.at<float>(i, 1));
                     string className = classNames[classId];
@@ -70,6 +78,7 @@ int main() {
                     int xRightTop = static_cast<int>(detectionMat.at<float>(i, 5) * frame.cols);
                     int yRightTop = static_cast<int>(detectionMat.at<float>(i, 6) * frame.rows);
 
+                    // Plotting bounding boxes
                     Rect box(xLeftBottom, yLeftBottom, xRightTop - xLeftBottom, yRightTop - yLeftBottom);
                     rectangle(frame, box, Scalar(0, 255, 0), 2);
 
@@ -81,6 +90,7 @@ int main() {
                               Point(xLeftBottom + labelSize.width, top + baseLine),
                               Scalar(0, 255, 0), FILLED);
                     putText(frame, label, Point(xLeftBottom, top), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 0), 1);
+
 
                     Ptr<Tracker> tracker = TrackerCSRT::create();
                     tracker->init(frame, box);
@@ -100,11 +110,13 @@ int main() {
             }
         }
 
+        // Displaying frames 
         imshow("Multi Object Tracking", frame);
         writer.write(frame);
         if (waitKey(1) == 27) break;
     }
 
+    // Releasing resources in the end
     cap.release();
     writer.release();
     destroyAllWindows();

@@ -24,7 +24,7 @@ This project implements **real-time object detection and tracking** using the Mo
 - 🎯 **Object Tracking** with **CSRT** tracker
 - 🔁 **Periodic Redetection** to avoid tracker drift
 - 🎞️ Saves annotated video with tracked objects
-- 👤 Tracks only selected classes: `"person"` and `"car"`
+- 👤 Tracks only selected classes: `"person"` and `"car"` etc.,
 
 ---
 

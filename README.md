@@ -34,7 +34,7 @@ This project implements **real-time object detection and tracking** using the Mo
 ## Requirements
 
 - OpenCV 4.x (including `opencv_dnn` and `opencv_tracking`)
-- C++17 or higher
+- C++11 or higher
 - A sample video (`cars.mp4`)
 
 ---

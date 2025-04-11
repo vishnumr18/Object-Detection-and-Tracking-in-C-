@@ -9,13 +9,15 @@ This project implements **real-time object detection and tracking** using the Mo
 ## File Structure
 
 ```plaintext
-├── object_tracking.cpp                         # Source code
-├── MobileNetSSD_deploy.prototxt    # Network architecture
-├── MobileNetSSD_deploy.caffemodel  # Pre-trained weights
-├── cars.mp4                         # Input video
-├── output1.avi                      # Output video with tracked boxes
+├── object_tracking.cpp                         
+├── MobileNetSSD_deploy.prototxt    
+├── MobileNetSSD_deploy.caffemodel  
+├── cars.mp4                         
+├── output1.avi                      
 ```
 ## Download input videos form (https://drive.google.com/drive/folders/1KjtZzYTevJuITsSW9TKpIvgQu9HMFUFb?usp=share_link)
+
+- Adde the videos in the project file.
 
 ---
 

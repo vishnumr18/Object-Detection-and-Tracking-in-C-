@@ -81,10 +81,9 @@ A new video file `output1.avi` will be generated with all detections and trackin
 
 ## Enhancements (Optional Ideas)
 
-- Assign unique tracking IDs
-- Use advanced trackers (Deep SORT, ByteTrack)
-- Add FPS display, better UI
-- Extend to more object classes
+- Add unique tracking IDs.
+- Allow more object classes.
+- YOLOv8 or ONNX model inference for modern object detection
 
 ---
 

@@ -99,7 +99,7 @@ int main() {
                 }
             }
         } else {
-            // Update trackers
+            // Updateing trackers
             for (size_t i = 0; i < trackers.size(); ++i) {
                 bool ok = trackers[i]->update(frame, boxes[i]);
                 if (ok) {
